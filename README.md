@@ -30,7 +30,62 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
+```
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+void vigenereCipher(char *text, char *key, int decrypt) {
+ int len = strlen(text);
+ int keyLen = strlen(key);
+ for (int i = 0, j = 0; i < len; i++) {
+ if (isalpha(text[i])) {
+ int textOffset = isupper(text[i]) ? 'A' : 'a';
+ int keyOffset = isupper(key[j % keyLen]) ? 'A' : 'a';
+ int shift = key[j % keyLen] - keyOffset;
+ if (decrypt) {
+ shift = 26 - shift;
+ }
+ text[i] = textOffset + (text[i] - textOffset + shift) % 26;
+ j++;
+ }
+ }
+}
+int main() {
+ char text[1000];
+ char key[100];
+ int choice;
+ printf("Vigenère Cipher Implementation\n");
+ printf("==============================\n");
+
+ printf("Enter plain text: ");
+ fgets(text, sizeof(text), stdin);
+ text[strcspn(text, "\n")] = 0; // Remove newline character
+
+ printf("Enter key: ");
+ fgets(key, sizeof(key), stdin);
+ key[strcspn(key, "\n")] = 0; // Remove newline character
+
+ for (int i = 0; key[i]; i++) {
+ key[i] = toupper(key[i]);
+ }
+
+ char encrypted[1000];
+ strcpy(encrypted, text);
+ vigenereCipher(encrypted, key, 0);
+ printf("\nEncrypted Message: %s\n", encrypted);
+ 
+ char decrypted[1000];
+ strcpy(decrypted, encrypted);
+ vigenereCipher(decrypted, key, 1);
+ printf("Decrypted Message: %s\n", decrypted);
+ return 0;
+}
+```
 
 ## OUTPUT
 
+<img width="560" height="270" alt="image" src="https://github.com/user-attachments/assets/f929608d-63ea-423c-b7cf-ec24c0407ff6" />
+
+
 ## RESULT
+ Thus, the program executed successfully
